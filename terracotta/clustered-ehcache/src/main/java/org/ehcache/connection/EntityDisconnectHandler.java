@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
+package org.ehcache.connection;
 
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+import java.net.URI;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terracotta.connection.DisconnectHandler;
 
 /**
  * 
@@ -24,23 +27,14 @@ import org.terracotta.entity.EntityClientEndpoint;
  *
  */
 
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
-
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
-  }
-
-  @Override
-  public void close() {
-    endpoint.close();
-  }
-
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
+public class EntityDisconnectHandler implements DisconnectHandler {
   
+  private static final Logger LOGGER = LoggerFactory.getLogger(EntityDisconnectHandler.class);
+
+  @Override
+  public void connectionLost(URI uri) {
+    // TODO Auto-generated method stub
+    LOGGER.error("Platform detected a disconnect from Server. Do as required");
+  }
+
 }

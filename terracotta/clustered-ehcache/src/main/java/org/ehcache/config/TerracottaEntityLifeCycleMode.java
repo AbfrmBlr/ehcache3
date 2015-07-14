@@ -13,34 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
-
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+package org.ehcache.config;
 
 /**
+ * This provides 4 modes which define the Lifecycle of an TerracottaEntity
+ * GET - The client just gets a reference to the already created Server Side Entity
  * 
  * @author Abhilash
  *
  */
-
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
-
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
-  }
-
-  @Override
-  public void close() {
-    endpoint.close();
-  }
-
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
+public enum TerracottaEntityLifeCycleMode {
   
+  GET,
+  CREATE,
+  CREATE_DESTROY,
+  GET_IF_CONFIG_SAME
+
 }

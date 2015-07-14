@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
+package org.ehcache.connection;
 
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+import java.net.URI;
+import java.util.Properties;
+
+import org.terracotta.connection.Connection;
+import org.terracotta.connection.ConnectionException;
+import org.terracotta.connection.ConnectionFactory;
 
 /**
  * 
@@ -24,23 +28,10 @@ import org.terracotta.entity.EntityClientEndpoint;
  *
  */
 
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
+public class EntityConnectionFactory {
 
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
+  public static Connection connect(URI uri) throws ConnectionException {
+    return ConnectionFactory.connect(uri, new EntityDisconnectHandler(), new Properties());
   }
 
-  @Override
-  public void close() {
-    endpoint.close();
-  }
-
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
-  
 }

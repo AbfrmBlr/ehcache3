@@ -13,34 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
+package org.ehcache.spi.cluster;
 
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+import org.ehcache.spi.ServiceLocator;
+import org.ehcache.spi.service.ServiceConfiguration;
+import org.ehcache.spi.service.ServiceFactory;
 
 /**
- * 
  * @author Abhilash
  *
  */
+public class TerracottaClientServiceFactory implements ServiceFactory<TerracottaClientService> {
 
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
-
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
+  @Override
+  public TerracottaClientService create(ServiceConfiguration<TerracottaClientService> serviceConfiguration, ServiceLocator serviceLocator) {
+    return new DefaultTerracottaClientService();
   }
 
   @Override
-  public void close() {
-    endpoint.close();
+  public Class<TerracottaClientService> getServiceType() {
+    return TerracottaClientService.class;
   }
 
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
-  
 }

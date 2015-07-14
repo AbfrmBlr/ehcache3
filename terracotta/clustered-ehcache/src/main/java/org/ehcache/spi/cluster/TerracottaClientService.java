@@ -13,34 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
+package org.ehcache.spi.cluster;
 
 import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+import org.ehcache.spi.service.Service;
 
 /**
- * 
  * @author Abhilash
  *
  */
+public interface TerracottaClientService extends Service {
 
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
+  /**
+   * This fetches the CacheManager Entity from and provides a local view of the
+   * server side counter part. This Entity at the server is located using the
+   * provided Terracotta URI in configuration.
+   * 
+   * @return
+   */
+  ClientSideCacheManagerEntity getCacheManagerEntity() ;
 
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
-  }
-
-  @Override
-  public void close() {
-    endpoint.close();
-  }
-
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
-  
 }
