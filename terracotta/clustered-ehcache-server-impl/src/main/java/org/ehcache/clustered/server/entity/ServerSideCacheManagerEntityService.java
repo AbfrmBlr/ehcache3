@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.EntityVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terracotta.corestorage.StorageManager;
@@ -32,17 +33,17 @@ import org.terracotta.entity.ServiceRegistry;
 
 import com.tc.object.EntityID;
 
-
 /**
- * The concrete implementation of {@ServerEntityService} which platform will use to instantiate 
- * the ServerSideCacheManagerEntity and even the Passive counter part of it 
+ * The concrete implementation of {@ServerEntityService}
+ * which platform will use to instantiate the ServerSideCacheManagerEntity and
+ * even the Passive counter part of it
  * 
  * @author Abhilash
  *
  */
 
-public class ServerSideCacheManagerEntityService implements ServerEntityService<EntityID, ServerSideCacheManagerEntity, PassiveServerEntity>{
-  
+public class ServerSideCacheManagerEntityService implements ServerEntityService<EntityID, ServerSideCacheManagerEntity, PassiveServerEntity> {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntityService.class);
 
   @Override
@@ -52,34 +53,40 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
 
   @Override
   public ServerSideCacheManagerEntity createActiveEntity(EntityID id, ServiceRegistry registry, byte[] configuration) {
-    //Some Comments - Actually voltorn is doing nothing from config. It just provides that to the server side entity
-    // which in turn is responsible to understand the config, lookup for required services it needs and then
+    // Some Comments - Actually voltorn is doing nothing from config. It just
+    // provides that to the server side entity
+    // which in turn is responsible to understand the config, lookup for
+    // required services it needs and then
     // instantiate its server side entity
-    
+
     CacheManagerEntityConfiguration config = null;
-    
+
     try {
       config = ConfigurationCodec.decodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {
       LOGGER.error("Failed to decode Entity Config", e);
     }
-    
-    if(config == null) {
+
+    if (config == null) {
       throw new IllegalArgumentException("Entity Config cannot be null");
     }
-    
+
     // The ClusteredCacheManagerConfiguration has the server side pools
-    //Once the voltron storage is done the server pool info in config will be used to fetch required 
+    // Once the voltron storage is done the server pool info in config will be
+    // used to fetch required
     // storage service abstraction
-    
-    //Optional has to go - need to tell this to voltron guys
-    //The storage is cooked up for now. Once the Voltron Storage API is nailed, this will change
-    
+
+    // Optional has to go - need to tell this to voltron guys
+    // The storage is cooked up for now. Once the Voltron Storage API is nailed,
+    // this will change
+
     Optional<Service<StorageManager>> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
-    Optional<Service<ClientCommunicator>> communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
-    
-    if(!storageService.isPresent() || !communicatorService.isPresent()) {
-      // there should be a ConfigurationMismatch or Illegal config exception since entity expected a service to be there but it was absent
+    Optional<Service<ClientCommunicator>> communicatorService = registry
+        .getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
+
+    if (!storageService.isPresent() || !communicatorService.isPresent()) {
+      // there should be a ConfigurationMismatch or Illegal config exception
+      // since entity expected a service to be there but it was absent
       // like createActiveEntity() throws ConfigMisMatchException
       throw new IllegalArgumentException("Storage Service is not configured.");
     }
@@ -89,6 +96,11 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
   @Override
   public PassiveServerEntity createPassiveEntity(EntityID id, ServiceRegistry registry, byte[] configuration) {
     throw new UnsupportedOperationException("Implement Me !");
+  }
+
+  @Override
+  public long getVersion() {
+    return EntityVersion.getVersion();
   }
 
 }

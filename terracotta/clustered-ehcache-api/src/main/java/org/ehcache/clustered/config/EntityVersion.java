@@ -13,35 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.clustered.client.entity;
-
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
-import org.terracotta.entity.EntityClientEndpoint;
+package org.ehcache.clustered.config;
 
 /**
- * 
  * @author Abhilash
  *
  */
-
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
-
-  private final EntityClientEndpoint endpoint;
-
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
-    this.endpoint = endpoint;
-    endpoint.registerListener(this);
-  }
-
-  @Override
-  public void close() {
-    endpoint.close();
-  }
-
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
-
-  }
+public class EntityVersion {
   
+  private static final long VERSION = 0l; 
+  
+  public static long getVersion() {
+    return VERSION;
+  }
+
 }
