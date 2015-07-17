@@ -31,8 +31,6 @@ import org.terracotta.entity.ServerEntityService;
 import org.terracotta.entity.Service;
 import org.terracotta.entity.ServiceRegistry;
 
-import com.tc.object.EntityID;
-
 /**
  * The concrete implementation of {@ServerEntityService}
  * which platform will use to instantiate the ServerSideCacheManagerEntity and
@@ -42,17 +40,17 @@ import com.tc.object.EntityID;
  *
  */
 
-public class ServerSideCacheManagerEntityService implements ServerEntityService<EntityID, ServerSideCacheManagerEntity, PassiveServerEntity> {
+public class ServerSideCacheManagerEntityService implements ServerEntityService<ServerSideCacheManagerEntity, PassiveServerEntity> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntityService.class);
 
   @Override
   public boolean handlesEntityType(String typeName) {
-    return typeName.equals("org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity");
+    return typeName.equals("org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity");
   }
 
   @Override
-  public ServerSideCacheManagerEntity createActiveEntity(EntityID id, ServiceRegistry registry, byte[] configuration) {
+  public ServerSideCacheManagerEntity createActiveEntity(ServiceRegistry registry, byte[] configuration) {
     // Some Comments - Actually voltorn is doing nothing from config. It just
     // provides that to the server side entity
     // which in turn is responsible to understand the config, lookup for
@@ -80,21 +78,20 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
     // The storage is cooked up for now. Once the Voltron Storage API is nailed,
     // this will change
 
-    Optional<Service<StorageManager>> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
-    Optional<Service<ClientCommunicator>> communicatorService = registry
-        .getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
+    Service<StorageManager> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
+    Service<ClientCommunicator> communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
 
-    if (!storageService.isPresent() || !communicatorService.isPresent()) {
+    if (storageService != null || communicatorService != null) {
       // there should be a ConfigurationMismatch or Illegal config exception
       // since entity expected a service to be there but it was absent
       // like createActiveEntity() throws ConfigMisMatchException
       throw new IllegalArgumentException("Storage Service is not configured.");
     }
-    return new ServerSideCacheManagerEntity(config, storageService.get(), communicatorService.get());
+    return new ServerSideCacheManagerEntity(config, storageService, communicatorService);
   }
 
   @Override
-  public PassiveServerEntity createPassiveEntity(EntityID id, ServiceRegistry registry, byte[] configuration) {
+  public PassiveServerEntity createPassiveEntity(ServiceRegistry registry, byte[] configuration) {
     throw new UnsupportedOperationException("Implement Me !");
   }
 

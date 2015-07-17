@@ -18,8 +18,8 @@ package org.ehcache.spi.cluster;
 import java.net.URI;
 
 import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
 import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntityProvider;
+import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.ehcache.clustered.entity.exceptions.EntityAccessException;
 import org.ehcache.config.TerracottaConfiguration;
 import org.ehcache.config.TerracottaEntityLifeCycleMode;
@@ -38,7 +38,7 @@ public class DefaultTerracottaClientService implements TerracottaClientService {
   private Connection connection = null;
   private TerracottaConfiguration configuration = null;
   private TerracottaEntityLifeCycleMode lifeCycleMode = TerracottaEntityLifeCycleMode.GET;
-  private volatile ClientSideCacheManagerEntity cacheManagerEntity = null;
+  private volatile ClusteredCacheManagerEntity cacheManagerEntity = null;
   private ClientSideCacheManagerEntityProvider cacheManagerEntityProvider;
 
   @Override
@@ -140,7 +140,7 @@ public class DefaultTerracottaClientService implements TerracottaClientService {
   }
 
   @Override
-  public ClientSideCacheManagerEntity getCacheManagerEntity() {
+  public ClusteredCacheManagerEntity getCacheManagerEntity() {
     if (cacheManagerEntity == null) {
       throw new IllegalStateException("CacheManagerEntityProvider Service failed to start.");
     }

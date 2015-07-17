@@ -15,7 +15,7 @@
  */
 package org.ehcache.spi.cluster;
 
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
+import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.ehcache.spi.service.Service;
 
 /**
@@ -31,6 +31,6 @@ public interface TerracottaClientService extends Service {
    * 
    * @return
    */
-  ClientSideCacheManagerEntity getCacheManagerEntity() ;
+  ClusteredCacheManagerEntity getCacheManagerEntity() ;
 
 }
