@@ -15,7 +15,7 @@
  */
 package org.ehcache.clustered.client.entity;
 
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
+import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.terracotta.entity.EntityClientEndpoint;
 
 /**
@@ -24,11 +24,11 @@ import org.terracotta.entity.EntityClientEndpoint;
  *
  */
 
-public class CacheManagerEntity implements ClientSideCacheManagerEntity {
+public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity {
 
   private final EntityClientEndpoint endpoint;
 
-  public CacheManagerEntity(EntityClientEndpoint endpoint) {
+  public ClientSideCacheManagerEntity(EntityClientEndpoint endpoint) {
     this.endpoint = endpoint;
     endpoint.registerListener(this);
   }

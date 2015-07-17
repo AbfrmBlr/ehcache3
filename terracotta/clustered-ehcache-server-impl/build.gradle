@@ -6,5 +6,4 @@ dependencies {
   compile group: 'org.terracotta', name: 'entity-server-api', version: parent.entityServerApi
   compile group: 'org.terracotta', name: 'standard-cluster-services', version: parent.standardClusterServices
   compile group: 'org.terracotta.internal', name: 'core-storage-api', version: parent.coreStorageApi
-  compile group: 'org.terracotta', name: 'tc-messaging', version: '2.0.0-SNAPSHOT'
 }

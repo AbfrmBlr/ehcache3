@@ -24,6 +24,6 @@ import org.terracotta.entity.EndpointListener;
  *
  */
 
-public interface ClientSideCacheManagerEntity extends Entity, EndpointListener {
+public interface ClusteredCacheManagerEntity extends Entity, EndpointListener {
 
 }

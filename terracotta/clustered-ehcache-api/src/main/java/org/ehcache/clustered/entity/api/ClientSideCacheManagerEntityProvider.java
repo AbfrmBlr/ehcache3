@@ -28,7 +28,7 @@ import org.terracotta.connection.entity.EntityRef;
  */
 public class ClientSideCacheManagerEntityProvider {
 
-  private volatile ClientSideCacheManagerEntity cacheManagerEntity;
+  private volatile ClusteredCacheManagerEntity cacheManagerEntity;
   private final CacheManagerEntityConfiguration cacheManagerConfiguration;
   private final Connection connection;
 
@@ -38,8 +38,8 @@ public class ClientSideCacheManagerEntityProvider {
   }
 
   public void createClientSideCacheManagerEntity() throws EntityAccessException {
-    EntityMaintenanceRef<ClientSideCacheManagerEntity, CacheManagerEntityConfiguration> maintenanceModeRef = connection.acquireMaintenanceModeRef(
-        ClientSideCacheManagerEntity.class, EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
+    EntityMaintenanceRef<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> maintenanceModeRef = connection.acquireMaintenanceModeRef(
+        ClusteredCacheManagerEntity.class, EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
     if (maintenanceModeRef.doesExist()) {
       throw new EntityAccessException("Server Side Entity is already exists.");
     }
@@ -49,9 +49,9 @@ public class ClientSideCacheManagerEntityProvider {
 
   }
 
-  public ClientSideCacheManagerEntity getClientSideCacheManagerEntity() throws EntityAccessException {
+  public ClusteredCacheManagerEntity getClientSideCacheManagerEntity() throws EntityAccessException {
     if (cacheManagerEntity != null) {
-      EntityRef<ClientSideCacheManagerEntity, CacheManagerEntityConfiguration> entityRef = connection.getEntityRef(ClientSideCacheManagerEntity.class,
+      EntityRef<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> entityRef = connection.getEntityRef(ClusteredCacheManagerEntity.class,
           EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
       cacheManagerEntity = entityRef.fetchEntity();
       if (cacheManagerEntity == null) {
@@ -63,8 +63,8 @@ public class ClientSideCacheManagerEntityProvider {
   }
 
   public void destroyClientSideCacheManagerEntity() throws EntityAccessException {
-    EntityMaintenanceRef<ClientSideCacheManagerEntity, CacheManagerEntityConfiguration> maintenanceModeRef = connection.acquireMaintenanceModeRef(
-        ClientSideCacheManagerEntity.class, EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
+    EntityMaintenanceRef<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> maintenanceModeRef = connection.acquireMaintenanceModeRef(
+        ClusteredCacheManagerEntity.class, EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
 
     if (!maintenanceModeRef.doesExist()) {
       throw new EntityAccessException("Server Side Entity does not exist");

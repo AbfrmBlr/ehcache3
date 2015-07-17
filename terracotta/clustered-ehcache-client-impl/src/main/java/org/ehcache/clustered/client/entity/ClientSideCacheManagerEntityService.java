@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
-import org.ehcache.clustered.entity.api.ClientSideCacheManagerEntity;
+import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terracotta.entity.EntityClientEndpoint;
@@ -31,18 +31,18 @@ import org.terracotta.entity.EntityClientService;
  *
  */
 
-public class CacheManagerEntityService implements EntityClientService<ClientSideCacheManagerEntity, CacheManagerEntityConfiguration> {
+public class ClientSideCacheManagerEntityService implements EntityClientService<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> {
   
-  private static final Logger LOGGER = LoggerFactory.getLogger(CacheManagerEntityService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ClientSideCacheManagerEntityService.class);
 
   @Override
-  public boolean handlesEntityType(Class<ClientSideCacheManagerEntity> cls) {
-    return cls.isAssignableFrom(ClientSideCacheManagerEntity.class); // for now
+  public boolean handlesEntityType(Class<ClusteredCacheManagerEntity> cls) {
+    return cls.isAssignableFrom(ClusteredCacheManagerEntity.class); // for now
   }
 
   @Override
-  public ClientSideCacheManagerEntity create(EntityClientEndpoint endpoint) {
-    return new CacheManagerEntity(endpoint);
+  public ClusteredCacheManagerEntity create(EntityClientEndpoint endpoint) {
+    return new ClientSideCacheManagerEntity(endpoint);
   }
 
   @Override
