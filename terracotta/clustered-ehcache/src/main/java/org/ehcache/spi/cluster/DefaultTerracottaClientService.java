@@ -40,9 +40,14 @@ public class DefaultTerracottaClientService implements TerracottaClientService {
   private TerracottaEntityLifeCycleMode lifeCycleMode = TerracottaEntityLifeCycleMode.GET;
   private volatile ClusteredCacheManagerEntity cacheManagerEntity = null;
   private ClientSideCacheManagerEntityProvider cacheManagerEntityProvider;
+  private final ServiceConfiguration<TerracottaClientService> config ;
+  
+  public DefaultTerracottaClientService(ServiceConfiguration<TerracottaClientService> serviceConfiguration) {
+    this.config = serviceConfiguration ;
+  }
 
   @Override
-  public void start(ServiceConfiguration<?> config, ServiceProvider serviceProvider) {
+  public void start(ServiceProvider serviceProvider) {
 
     if (config == null) {
       throw new IllegalArgumentException("CacheManagerEntityProvider Service failed to start. Terracotta Configuration cannot be null");

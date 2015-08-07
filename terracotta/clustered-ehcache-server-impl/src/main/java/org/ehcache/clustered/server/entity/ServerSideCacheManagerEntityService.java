@@ -16,7 +16,6 @@
 package org.ehcache.clustered.server.entity;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
