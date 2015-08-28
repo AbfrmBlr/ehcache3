@@ -25,6 +25,7 @@ import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terracotta.corestorage.KeyValueStorage;
 import org.terracotta.corestorage.StorageManager;
 import org.terracotta.entity.AbstractDecodingServerEntity;
 import org.terracotta.entity.ClientCommunicator;
@@ -41,6 +42,7 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntity.class);
   
   private final Service<StorageManager> storageService;
+  private final StorageManager storageManager;
   private final Service<ClientCommunicator> communicatorService;
 
   private Set<ClientDescriptor> connectedClients = new HashSet<ClientDescriptor>();
@@ -50,10 +52,13 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   private final ConcurrencyStrategy concurrencyStrategy = new EhCacheConcurrencyStrategy();
   
   private final CacheManagerEntityConfiguration configuration;
+  
+  private KeyValueStorage<Object, Object> poolInfo;
 
   public ServerSideCacheManagerEntity(CacheManagerEntityConfiguration config, Service<?>... services) {
     this.storageService = (Service<StorageManager>) services[0];
     this.communicatorService = (Service<ClientCommunicator>) services[1];
+    this.storageManager = storageService.get();
     this.configuration = config;
   }
 
@@ -77,7 +82,7 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   @Override
   protected ClusterOperation decodeInput(byte[] bytes) {
     // TODO serialize - serialization would change according to type of operation
-    // need to write two kinds of serialization/desriaolization strategy
+    // need to write two kinds of serialization/deserialization strategy
     return null;
   }
 
@@ -122,14 +127,6 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   @Override
   public void createNew() {
     
-//    storageService.get().createKeyValueStorage("", null);
-//    storageService.get().destroyKeyValueStorage("");
-//    storageService.get().getKeyValueStorage("", Object.class, Object.class);
-    // TODO Auto-generated method stub
-    // This is actually the init part of the lifecycle
-    // This gets called by the platform when the entity is created for the first time
-    // This is the place where entity will create all its state which either needs to be persisted or not
-
   }
 
   @Override

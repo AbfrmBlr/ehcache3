@@ -50,12 +50,7 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
 
   @Override
   public ServerSideCacheManagerEntity createActiveEntity(ServiceRegistry registry, byte[] configuration) {
-    // Some Comments - Actually voltorn is doing nothing from config. It just
-    // provides that to the server side entity
-    // which in turn is responsible to understand the config, lookup for
-    // required services it needs and then
-    // instantiate its server side entity
-
+    
     CacheManagerEntityConfiguration config = null;
 
     try {
@@ -68,22 +63,10 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
       throw new IllegalArgumentException("Entity Config cannot be null");
     }
 
-    // The ClusteredCacheManagerConfiguration has the server side pools
-    // Once the voltron storage is done the server pool info in config will be
-    // used to fetch required
-    // storage service abstraction
-
-    // Optional has to go - need to tell this to voltron guys
-    // The storage is cooked up for now. Once the Voltron Storage API is nailed,
-    // this will change
-
     Service<StorageManager> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
     Service<ClientCommunicator> communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
 
     if (storageService != null || communicatorService != null) {
-      // there should be a ConfigurationMismatch or Illegal config exception
-      // since entity expected a service to be there but it was absent
-      // like createActiveEntity() throws ConfigMisMatchException
       throw new IllegalArgumentException("Storage Service is not configured.");
     }
     return new ServerSideCacheManagerEntity(config, storageService, communicatorService);
