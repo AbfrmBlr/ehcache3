@@ -20,7 +20,7 @@ import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
 import org.ehcache.ClusteredCacheManager;
 import org.ehcache.spi.cluster.TerracottaClientService;
-import org.ehcache.spi.service.ServiceConfiguration;
+import org.ehcache.spi.service.ServiceCreationConfiguration;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Alex Snaps
  */
-public class TerracottaConfiguration implements ServiceConfiguration<TerracottaClientService>, CacheManagerConfiguration<ClusteredCacheManager> {
+public class TerracottaConfiguration implements ServiceCreationConfiguration<TerracottaClientService>, CacheManagerConfiguration<ClusteredCacheManager> {
 
   private final List<URI> stripes = new ArrayList<URI>();
   private final TerracottaEntityLifeCycleMode lifecycleMode;

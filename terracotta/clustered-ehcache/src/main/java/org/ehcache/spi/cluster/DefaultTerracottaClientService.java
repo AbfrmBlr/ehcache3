@@ -26,6 +26,7 @@ import org.ehcache.config.TerracottaEntityLifeCycleMode;
 import org.ehcache.connection.EntityConnectionFactory;
 import org.ehcache.spi.ServiceProvider;
 import org.ehcache.spi.service.ServiceConfiguration;
+import org.ehcache.spi.service.ServiceCreationConfiguration;
 import org.terracotta.connection.Connection;
 import org.terracotta.connection.ConnectionException;
 
@@ -40,9 +41,9 @@ public class DefaultTerracottaClientService implements TerracottaClientService {
   private TerracottaEntityLifeCycleMode lifeCycleMode = TerracottaEntityLifeCycleMode.GET;
   private volatile ClusteredCacheManagerEntity cacheManagerEntity = null;
   private ClientSideCacheManagerEntityProvider cacheManagerEntityProvider;
-  private final ServiceConfiguration<TerracottaClientService> config ;
+  private final ServiceCreationConfiguration<TerracottaClientService> config ;
   
-  public DefaultTerracottaClientService(ServiceConfiguration<TerracottaClientService> serviceConfiguration) {
+  public DefaultTerracottaClientService(ServiceCreationConfiguration<TerracottaClientService> serviceConfiguration) {
     this.config = serviceConfiguration ;
   }
 

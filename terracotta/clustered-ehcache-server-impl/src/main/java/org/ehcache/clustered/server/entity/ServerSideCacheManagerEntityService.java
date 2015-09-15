@@ -66,7 +66,7 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
     Service<StorageManager> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
     Service<ClientCommunicator> communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
 
-    if (storageService != null || communicatorService != null) {
+    if (storageService == null || communicatorService == null) {
       throw new IllegalArgumentException("Storage Service is not configured.");
     }
     return new ServerSideCacheManagerEntity(config, storageService, communicatorService);

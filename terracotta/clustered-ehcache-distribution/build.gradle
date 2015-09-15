@@ -32,11 +32,12 @@ dependencies {
 }
 
 shadowJar {
-  baseName = shadowBaseName
-  classifier = ''
-  projectNamesToInclude.each {projName -> dependencies {include(project(projName))}}
-  fillManifest(manifest, shadowBaseName)
-  mergeServiceFiles()
+/*  baseName = shadowBaseName
+ * classifier = ''
+ * projectNamesToInclude.each {projName -> dependencies {include(project(projName))}}
+ * fillManifest(manifest, shadowBaseName)
+ * mergeServiceFiles()
+ */
 }
 
 task shadowSourceJar(type: Jar, dependsOn: shadowJar) {
