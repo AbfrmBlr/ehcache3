@@ -15,7 +15,7 @@
  */
 package org.ehcache.spi.cluster;
 
-import org.ehcache.spi.service.ServiceConfiguration;
+import org.ehcache.spi.service.ServiceCreationConfiguration;
 import org.ehcache.spi.service.ServiceFactory;
 
 /**
@@ -25,13 +25,13 @@ import org.ehcache.spi.service.ServiceFactory;
 public class TerracottaClientServiceFactory implements ServiceFactory<TerracottaClientService> {
 
   @Override
-  public TerracottaClientService create(ServiceConfiguration<TerracottaClientService> serviceConfiguration) {
-    return new DefaultTerracottaClientService(serviceConfiguration);
+  public Class<TerracottaClientService> getServiceType() {
+    return TerracottaClientService.class;
   }
 
   @Override
-  public Class<TerracottaClientService> getServiceType() {
-    return TerracottaClientService.class;
+  public TerracottaClientService create(ServiceCreationConfiguration<TerracottaClientService> configuration) {
+    return new DefaultTerracottaClientService(configuration);
   }
 
 }
