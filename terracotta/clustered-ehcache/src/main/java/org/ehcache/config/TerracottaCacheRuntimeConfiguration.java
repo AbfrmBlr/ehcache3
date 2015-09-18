@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package org.ehcache;
-
-import org.ehcache.config.ClusteredCacheSharedRuntimeConfiguration;
-
+package org.ehcache.config;
 
 /**
  * @author Alex Snaps
  */
-public interface ClusteredCacheManager extends PersistentCacheManager {
+public interface TerracottaCacheRuntimeConfiguration<K, V> extends CacheRuntimeConfiguration<K, V> {
 
-  <K, V> ClusteredCacheSharedRuntimeConfiguration<K, V> getClusteredConfig(Cache<K, V> simple);
+  ClusteredCacheSharedRuntimeConfiguration<K, V> getClusteredCacheSharedRuntimeConfiguration();
 }
