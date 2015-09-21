@@ -45,12 +45,12 @@ public class ClusterResourcePoolBuilder {
     return this;
   }
   
-  public ClusterResourcePoolBuilder offheap(String poolAlias, long size, MemoryUnit unit) {
+  public ClusterResourcePoolBuilder offheap(String poolAlias, long size, MemoryUnit unit, boolean persistent) {
     this.resourcePools.put(poolAlias, new ResourcePoolImpl(Cluster.OFFHEAP, size, unit, false));
     return this;
   }
   
-  public ClusterResourcePoolBuilder frs(String poolAlias, long size, MemoryUnit unit, boolean persistent) {
+  public ClusterResourcePoolBuilder hybrid(String poolAlias, long size, MemoryUnit unit, boolean persistent) {
     this.resourcePools.put(poolAlias, new ResourcePoolImpl(Cluster.HYBRID, size, unit, persistent));
     return this;
   }

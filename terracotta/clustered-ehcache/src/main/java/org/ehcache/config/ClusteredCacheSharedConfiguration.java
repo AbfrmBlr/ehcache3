@@ -66,6 +66,7 @@ public interface ClusteredCacheSharedConfiguration<K, V> {
    *  @return the {@code Expiry} to configure
    */
   Expiry<? super K, ? super V> getExpiry();
+  
 
   boolean isTransactional(); // todo: all "local" caches to access transactionally?
 
@@ -74,5 +75,6 @@ public interface ClusteredCacheSharedConfiguration<K, V> {
   boolean isWriteBehind(); // todo: requires a local loader? what about a writer?
 
   ResourcePool getResourcePool();
+
 
 }
