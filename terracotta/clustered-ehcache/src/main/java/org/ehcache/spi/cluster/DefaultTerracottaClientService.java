@@ -75,11 +75,6 @@ public class DefaultTerracottaClientService implements TerracottaClientService {
         cacheManagerEntityProvider = new ClientSideCacheManagerEntityProvider(new CacheManagerEntityConfiguration() {
 
           @Override
-          public String getServerSidePool() {
-            return configuration.getServerPoolId();
-          }
-
-          @Override
           public String getEntityID() {
             return getEntityId(configuration.getTerracottaURIs().get(0));
           }

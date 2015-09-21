@@ -34,7 +34,6 @@ public class TerracottaConfiguration implements ServiceCreationConfiguration<Ter
 
   private final List<URI> stripes = new ArrayList<URI>();
   private final TerracottaEntityLifeCycleMode lifecycleMode;
-  private String serverPoolId;
 
   public TerracottaConfiguration(String serverPoolId, URI uri, URI... uris) {
     this.lifecycleMode = TerracottaEntityLifeCycleMode.GET;
@@ -42,16 +41,14 @@ public class TerracottaConfiguration implements ServiceCreationConfiguration<Ter
     if (uris != null && uris.length != 0) {
       this.stripes.addAll(Arrays.asList(uris));
     }
-    this.serverPoolId = serverPoolId;
   }
 
-  public TerracottaConfiguration(TerracottaEntityLifeCycleMode lifecycleMode, String serverPoolId, URI uri, URI... uris) {
+  public TerracottaConfiguration(TerracottaEntityLifeCycleMode lifecycleMode, URI uri, URI... uris) {
     this.lifecycleMode = lifecycleMode;
     this.stripes.add(uri);
     if (uris != null && uris.length != 0) {
       this.stripes.addAll(Arrays.asList(uris));
     }
-    this.serverPoolId = serverPoolId;
   }
 
   @Override
@@ -65,10 +62,6 @@ public class TerracottaConfiguration implements ServiceCreationConfiguration<Ter
 
   public TerracottaEntityLifeCycleMode getLifeCycleMode() {
     return this.lifecycleMode;
-  }
-
-  public String getServerPoolId() {
-    return this.serverPoolId;
   }
 
   @Override
