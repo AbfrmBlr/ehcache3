@@ -39,11 +39,11 @@ public class TerracottaBaseCacheConfiguration<K, V> extends BaseCacheConfigurati
     this.cacheSharedConfiguration = cacheSharedConfiguration;
   }
 
+  //The resourcePools has to change to a mapping of poolAlias -> ResourcePool once ARC is in place.
+  //This assumption will change as and when ARC evolves
   public TerracottaBaseCacheConfiguration(final Class<K> keyType, final Class<V> valueType, final ClassLoader classLoader, final ResourcePools resourcePools) {
     super(keyType, valueType, null, null, classLoader, null, resourcePools);
   }
-
-  // TODO Override all getters to first check whether to delegate to the cacheSharedConfiguration ?!
 
   @Override
   public ClusteredCacheSharedConfiguration<K, V> getClusteredCacheConfiguration() {

@@ -46,7 +46,6 @@ public class BaseClusteredCacheSharedConfiguration<K, V> implements ClusteredCac
     this(kClass, vClass, evictionVeto, evictionPrioritizer, expiry, null, false, CacheLoaderWriter.NONE);
   }
 
-  @Deprecated
   public BaseClusteredCacheSharedConfiguration(final Class<K> kClass,
                                                final Class<V> vClass,
                                                final EvictionVeto<? super K, ? super V> evictionVeto,

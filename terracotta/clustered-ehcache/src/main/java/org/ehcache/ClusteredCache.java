@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.ehcache.config;
+package org.ehcache;
 
 /**
- * @author Alex Snaps
+ * @author Abhilash
+ *
  */
-public interface TerracottaCacheConfiguration<K, V> extends CacheConfiguration<K, V> {
-
-  ClusteredCacheSharedConfiguration<K, V> getClusteredCacheConfiguration();
+public interface ClusteredCache<K, V> extends Cache<K, V> {
 
 }
