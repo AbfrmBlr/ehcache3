@@ -24,13 +24,6 @@ package org.ehcache.clustered.config;
 public interface CacheManagerEntityConfiguration {
 
   /**
-   * Gets the name of the server side pool to which CacheManager 
-   * Entity is attached
-   * @return name of the server side pool
-   */
-  String getServerSidePool(); 
-
-  /**
    * The platform requires an entityid to be unique
    * So user needs to provide a unique id/uri for the cachemanager entity
    * @return entity id of the entity

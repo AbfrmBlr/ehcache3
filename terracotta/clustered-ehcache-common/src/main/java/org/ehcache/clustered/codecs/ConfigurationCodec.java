@@ -33,7 +33,6 @@ public class ConfigurationCodec {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     DataOutputStream dataOutputStream = new DataOutputStream(out);
     dataOutputStream.writeUTF(config.getEntityID());
-    dataOutputStream.writeUTF(config.getServerSidePool());
     dataOutputStream.close();
     return out.toByteArray();
   }
@@ -42,13 +41,7 @@ public class ConfigurationCodec {
     ByteArrayInputStream in = new ByteArrayInputStream(cacheManagerConfig);
     DataInputStream dataInputStream =  new DataInputStream(in);
     final String entityId = dataInputStream.readUTF();
-    final String serverPool = dataInputStream.readUTF();
     return new CacheManagerEntityConfiguration() {
-
-      @Override
-      public String getServerSidePool() {
-        return serverPool;
-      }
 
       @Override
       public String getEntityID() {
