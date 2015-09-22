@@ -16,6 +16,7 @@
 
 package org.ehcache.config;
 
+import org.ehcache.cluster.resources.ClusterResourcePool;
 import org.ehcache.expiry.Expiry;
 
 /**
@@ -30,7 +31,7 @@ public class BaseClusteredCacheSharedConfiguration<K, V> implements ClusteredCac
   private final Expiry<? super K, ? super V> expiry;
   private final boolean transactionalCache;
   private final CacheLoaderWriter cacheLoaderWriter;
-  private final ResourcePool resourcePool;
+  private final ClusterResourcePool resourcePool;
 
   public BaseClusteredCacheSharedConfiguration(final Class<K> kClass,
                                                final Class<V> vClass) {
@@ -65,7 +66,7 @@ public class BaseClusteredCacheSharedConfiguration<K, V> implements ClusteredCac
                                                final EvictionVeto<? super K, ? super V> evictionVeto,
                                                final EvictionPrioritizer<? super K, ? super V> evictionPrioritizer,
                                                final Expiry<? super K, ? super V> expiry,
-                                               final ResourcePool resourcePool,
+                                               final ClusterResourcePool resourcePool,
                                                final boolean transactionalCache,
                                                final CacheLoaderWriter cacheLoaderWriter) {
     this.kClass = kClass;
@@ -119,7 +120,7 @@ public class BaseClusteredCacheSharedConfiguration<K, V> implements ClusteredCac
   }
 
   @Override
-  public ResourcePool getResourcePool() {
+  public ClusterResourcePool getResourcePool() {
     return resourcePool;
   }
 

@@ -15,14 +15,11 @@
  */
 package org.ehcache.config.builders;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.ehcache.cluster.resources.Cluster;
-import org.ehcache.config.ResourcePool;
-import org.ehcache.config.ResourcePoolImpl;
+import org.ehcache.cluster.resources.ClusterResourcePool;
+import org.ehcache.cluster.resources.ClusterResourcePoolImpl;
 import org.ehcache.config.ResourceUnit;
-import org.ehcache.config.units.MemoryUnit;
 
 /**
  * @author Abhilash
@@ -30,7 +27,7 @@ import org.ehcache.config.units.MemoryUnit;
  */
 public class ClusterResourcePoolBuilder {
   
-  private final Map<String, ResourcePool> resourcePools = new HashMap<String, ResourcePool>();
+  private ClusterResourcePool resourcePool;
 
   private ClusterResourcePoolBuilder() {
     
@@ -41,22 +38,12 @@ public class ClusterResourcePoolBuilder {
   }
   
   public ClusterResourcePoolBuilder with(String poolAlias, Cluster type, long size, ResourceUnit unit, boolean persistent) {
-    this.resourcePools.put(poolAlias, new ResourcePoolImpl(type, size, unit, persistent));
-    return this;
-  }
-  
-  public ClusterResourcePoolBuilder offheap(String poolAlias, long size, MemoryUnit unit, boolean persistent) {
-    this.resourcePools.put(poolAlias, new ResourcePoolImpl(Cluster.OFFHEAP, size, unit, false));
-    return this;
-  }
-  
-  public ClusterResourcePoolBuilder hybrid(String poolAlias, long size, MemoryUnit unit, boolean persistent) {
-    this.resourcePools.put(poolAlias, new ResourcePoolImpl(Cluster.HYBRID, size, unit, persistent));
+    this.resourcePool = new ClusterResourcePoolImpl(type, size, unit, persistent, poolAlias);
     return this;
   }
 
-  public Map<String, ResourcePool> build() {
-    return resourcePools;
+  public ClusterResourcePool build() {
+    return this.resourcePool;
   }
   
   
