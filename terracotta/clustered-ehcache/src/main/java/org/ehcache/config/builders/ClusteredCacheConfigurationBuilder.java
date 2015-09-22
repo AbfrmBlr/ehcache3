@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import org.ehcache.cluster.resources.ClusterResourcePool;
 import org.ehcache.config.EvictionPrioritizer;
 import org.ehcache.config.EvictionVeto;
 import org.ehcache.config.ResourcePool;
@@ -52,7 +53,7 @@ public class ClusteredCacheConfigurationBuilder<K, V> {
   private EvictionPrioritizer<? super K, ? super V> evictionPrioritizer;
   private EvictionVeto<? super K, ? super V> evictionVeto;
   
-  private Map<String, ResourcePool> clusterResourcePools = new HashMap<String, ResourcePool>();
+  private ClusterResourcePool clusterResourcePool;
   private ResourcePools resourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder().heap(Long.MAX_VALUE, EntryUnit.ENTRIES).build();
   
   private ClusteredCacheConfigurationBuilder() {
@@ -87,12 +88,12 @@ public class ClusteredCacheConfigurationBuilder<K, V> {
     return withResourcePools(resourcePoolsBuilder.build());
   }
   
-  public ClusteredCacheConfigurationBuilder<K, V> withResourcePools(ClusterResourcePoolBuilder clusterResourcePoolsBuilder) {
+  public ClusteredCacheConfigurationBuilder<K, V> withClusterResourcePools(ClusterResourcePoolBuilder clusterResourcePoolsBuilder) {
     if (clusterResourcePoolsBuilder == null) {
       throw new NullPointerException("Null resource pools builder");
     }
     ClusteredCacheConfigurationBuilder<K, V> otherBuilder = new ClusteredCacheConfigurationBuilder<K, V>(this);
-    otherBuilder.clusterResourcePools.putAll(clusterResourcePoolsBuilder.build());
+    otherBuilder.clusterResourcePool = clusterResourcePoolsBuilder.build();
     return otherBuilder;
   }
   
@@ -120,4 +121,5 @@ public class ClusteredCacheConfigurationBuilder<K, V> {
   public boolean hasDefaultExpiry() {
     return expiry == null;
   }
+  
 }

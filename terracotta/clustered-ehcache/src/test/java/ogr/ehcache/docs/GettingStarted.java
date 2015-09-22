@@ -15,12 +15,14 @@
  */
 package ogr.ehcache.docs;
 
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
+import org.ehcache.cluster.resources.Cluster;
 import org.ehcache.config.ResourcePoolsBuilder;
 import org.ehcache.config.TerracottaConfiguration;
 import org.ehcache.config.TerracottaEntityLifeCycleMode;
@@ -42,9 +44,9 @@ public class GettingStarted {
   public void createClusteredCacheManagerOnly() throws URISyntaxException {
     
     //If the client has rights to create/dstroy. Ideally only some admin clients should be allowed to do it.
-    TerracottaConfiguration configuration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.CREATE_DESTROY, new URI("terracotta://localhost:9510"));
+    TerracottaConfiguration configuration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.CREATE_DESTROY, new URI("terracotta://localhost:9510/cachemanager1"));
     
-    TerracottaConfiguration getOnlyconfiguration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.GET, new URI("terracotta://localhost:9510"));
+    TerracottaConfiguration getOnlyconfiguration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.GET, new URI("terracotta://localhost:9510/cachemanager2"));
     
     CacheManager clusteredCacheManager = CacheManagerBuilder.newCacheManagerBuilder().with(configuration).build(true);
   }
@@ -52,7 +54,8 @@ public class GettingStarted {
   @Test
   @Ignore
   public void createClusteredCache() throws URISyntaxException {
-    TerracottaConfiguration configuration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.CREATE_DESTROY, new URI("terracotta://localhost:9510"));
+    
+    TerracottaConfiguration configuration = new TerracottaConfiguration(TerracottaEntityLifeCycleMode.CREATE_DESTROY, new URI("terracotta://localhost:9510/cachemanager1"));
     
     CacheManager clusteredCacheManager = CacheManagerBuilder.newCacheManagerBuilder().with(configuration).build(true);
     
@@ -60,11 +63,13 @@ public class GettingStarted {
                                                                                 .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
                                                                                     .heap(100, EntryUnit.ENTRIES)
                                                                                     .offheap(5, MemoryUnit.GB))
-                                                                                .withResourcePools(ClusterResourcePoolBuilder.newClusterResourcePoolsBuilder()
-                                                                                    .offheap("offHeap", 10, MemoryUnit.GB, true)) 
+                                                                                .withClusterResourcePools(ClusterResourcePoolBuilder.newClusterResourcePoolsBuilder()
+                                                                                    .with("offHeap", Cluster.OFFHEAP, 10, MemoryUnit.GB, true)) 
                                                                                 .buildConfig(String.class, String.class));
     
     
   }
+  
+
   
 }

@@ -17,6 +17,7 @@
 package org.ehcache.config;
 
 import org.ehcache.Cache;
+import org.ehcache.cluster.resources.ClusterResourcePool;
 import org.ehcache.expiry.Expiry;
 
 /**
@@ -74,7 +75,7 @@ public interface ClusteredCacheSharedConfiguration<K, V> {
 
   boolean isWriteBehind(); // todo: requires a local loader? what about a writer?
 
-  ResourcePool getResourcePool();
+  ClusterResourcePool getResourcePool();
 
 
 }
