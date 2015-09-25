@@ -16,7 +16,7 @@
 package org.ehcache.clustered.entity.api;
 
 import org.terracotta.connection.entity.Entity;
-import org.terracotta.entity.EndpointListener;
+import org.terracotta.entity.EndpointDelegate;
 
 /**
  * 
@@ -24,6 +24,6 @@ import org.terracotta.entity.EndpointListener;
  *
  */
 
-public interface ClusteredCacheManagerEntity extends Entity, EndpointListener {
+public interface ClusteredCacheManagerEntity extends Entity, EndpointDelegate {
 
 }

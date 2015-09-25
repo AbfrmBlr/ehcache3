@@ -31,7 +31,7 @@ import org.terracotta.connection.ConnectionFactory;
 public class EntityConnectionFactory {
 
   public static Connection connect(URI uri) throws ConnectionException {
-    return ConnectionFactory.connect(uri, new EntityDisconnectHandler(), new Properties());
+    return ConnectionFactory.connect(uri, new Properties());
   }
 
 }

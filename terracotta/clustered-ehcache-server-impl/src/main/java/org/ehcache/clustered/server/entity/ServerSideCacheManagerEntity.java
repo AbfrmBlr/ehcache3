@@ -74,6 +74,11 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   }
 
   @Override
+  public void handleReconnect(final ClientDescriptor clientDescriptor, final byte[] extendedReconnectData) {
+    throw new UnsupportedOperationException("Implement me!");
+  }
+
+  @Override
   public void destroy() {
     storageService.destroy(); // for all services
     communicatorService.destroy();

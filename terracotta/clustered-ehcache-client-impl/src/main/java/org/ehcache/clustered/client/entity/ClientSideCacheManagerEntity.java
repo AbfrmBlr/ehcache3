@@ -30,7 +30,7 @@ public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity
 
   public ClientSideCacheManagerEntity(EntityClientEndpoint endpoint) {
     this.endpoint = endpoint;
-    endpoint.registerListener(this);
+    endpoint.setDelegate(this);
   }
 
   @Override
@@ -43,5 +43,15 @@ public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity
     // TODO Based on the higher 32 bits find cache
 
   }
-  
+
+  @Override
+  public byte[] createExtendedReconnectData() {
+    throw new UnsupportedOperationException("Implement me!");
+  }
+
+  @Override
+  public void didDisconnectUnexpectedly() {
+    throw new UnsupportedOperationException("Implement me!");
+  }
+
 }

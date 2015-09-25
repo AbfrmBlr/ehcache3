@@ -51,7 +51,7 @@ public class ClientSideCacheManagerEntityProvider {
 
   public ClusteredCacheManagerEntity getClientSideCacheManagerEntity() throws EntityAccessException {
     if (cacheManagerEntity != null) {
-      EntityRef<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> entityRef = connection.getEntityRef(ClusteredCacheManagerEntity.class,
+      EntityRef<ClusteredCacheManagerEntity> entityRef = connection.getEntityRef(ClusteredCacheManagerEntity.class,
           EntityVersion.getVersion(), cacheManagerConfiguration.getEntityID());
       cacheManagerEntity = entityRef.fetchEntity();
       if (cacheManagerEntity == null) {
