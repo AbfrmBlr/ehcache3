@@ -13,14 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ehcache.connection;
-
-import java.net.URI;
-import java.util.Properties;
-
-import org.terracotta.connection.Connection;
-import org.terracotta.connection.ConnectionException;
-import org.terracotta.connection.ConnectionFactory;
+package org.ehcache.clustered.config;
 
 /**
  * 
@@ -28,10 +21,6 @@ import org.terracotta.connection.ConnectionFactory;
  *
  */
 
-public class EntityConnectionFactory {
-
-  public static Connection connect(URI uri) throws ConnectionException {
-    return ConnectionFactory.connect(uri, new Properties());
-  }
+public interface ServerCacheManagerConfiguration {
 
 }

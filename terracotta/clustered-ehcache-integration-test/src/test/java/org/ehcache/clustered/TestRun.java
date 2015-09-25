@@ -16,7 +16,7 @@
 package org.ehcache.clustered;
 
 import org.ehcache.clustered.client.entity.ClientSideCacheManagerEntityService;
-import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.config.EntityVersion;
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.ehcache.clustered.server.entity.ServerSideCacheManagerEntityService;
@@ -76,7 +76,7 @@ public class TestRun {
   public void singleClientSingleServer() throws Throwable {
     // Create an instance which we expect to succeed.
     long implementationVersion = EntityVersion.getVersion();
-    EntityMaintenanceRef<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> mmodeRef = this.primaryConnection
+    EntityMaintenanceRef<ClusteredCacheManagerEntity, ServerCacheManagerConfiguration> mmodeRef = this.primaryConnection
         .acquireMaintenanceModeRef(ClusteredCacheManagerEntity.class, implementationVersion, ENTITY_NAME);
     try {
       mmodeRef.create(new TestConfig());
@@ -107,11 +107,7 @@ public class TestRun {
   }
 
 
-  private static class TestConfig implements CacheManagerEntityConfiguration {
-    @Override
-    public String getEntityID() {
-      return "what is this for?";
-    }
+  private static class TestConfig implements ServerCacheManagerConfiguration {
   }
 
   private static class TestService implements Service<StorageManager> {

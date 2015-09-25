@@ -18,7 +18,7 @@ package org.ehcache.clustered.server.entity;
 import java.io.IOException;
 
 import org.ehcache.clustered.codecs.ConfigurationCodec;
-import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.config.EntityVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
   @Override
   public ServerSideCacheManagerEntity createActiveEntity(ServiceRegistry registry, byte[] configuration) {
     
-    CacheManagerEntityConfiguration config = null;
+    ServerCacheManagerConfiguration config = null;
 
     try {
       config = ConfigurationCodec.decodeCacheManangerConfiguration(configuration);

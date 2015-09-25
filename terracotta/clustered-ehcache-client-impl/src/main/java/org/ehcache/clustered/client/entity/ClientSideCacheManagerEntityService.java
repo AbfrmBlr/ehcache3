@@ -18,7 +18,7 @@ package org.ehcache.clustered.client.entity;
 import java.io.IOException;
 
 import org.ehcache.clustered.codecs.ConfigurationCodec;
-import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import org.terracotta.entity.EntityClientService;
  *
  */
 
-public class ClientSideCacheManagerEntityService implements EntityClientService<ClusteredCacheManagerEntity, CacheManagerEntityConfiguration> {
+public class ClientSideCacheManagerEntityService implements EntityClientService<ClusteredCacheManagerEntity, ServerCacheManagerConfiguration> {
   
   private static final Logger LOGGER = LoggerFactory.getLogger(ClientSideCacheManagerEntityService.class);
 
@@ -46,8 +46,8 @@ public class ClientSideCacheManagerEntityService implements EntityClientService<
   }
 
   @Override
-  public byte[] serializeConfiguration(CacheManagerEntityConfiguration configuration) {
-    byte[] config = null;
+  public byte[] serializeConfiguration(ServerCacheManagerConfiguration configuration) {
+    byte[] config;
     try {
       config = ConfigurationCodec.encodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {
@@ -58,8 +58,8 @@ public class ClientSideCacheManagerEntityService implements EntityClientService<
   }
 
   @Override
-  public CacheManagerEntityConfiguration deserializeConfiguration(byte[] configuration) {
-    CacheManagerEntityConfiguration config = null;
+  public ServerCacheManagerConfiguration deserializeConfiguration(byte[] configuration) {
+    ServerCacheManagerConfiguration config;
     try {
       config = ConfigurationCodec.decodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {

@@ -21,7 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 
 /**
  * @author Abhilash
@@ -29,26 +29,18 @@ import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
  */
 public class ConfigurationCodec {
 
-  public static byte[] encodeCacheManangerConfiguration(CacheManagerEntityConfiguration config) throws IOException {
+  public static byte[] encodeCacheManangerConfiguration(ServerCacheManagerConfiguration config) throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     DataOutputStream dataOutputStream = new DataOutputStream(out);
-    dataOutputStream.writeUTF(config.getEntityID());
     dataOutputStream.close();
     return out.toByteArray();
   }
 
-  public static CacheManagerEntityConfiguration decodeCacheManangerConfiguration(byte[] cacheManagerConfig) throws IOException {
+  public static ServerCacheManagerConfiguration decodeCacheManangerConfiguration(byte[] cacheManagerConfig) throws IOException {
     ByteArrayInputStream in = new ByteArrayInputStream(cacheManagerConfig);
     DataInputStream dataInputStream =  new DataInputStream(in);
-    final String entityId = dataInputStream.readUTF();
-    return new CacheManagerEntityConfiguration() {
-
-      @Override
-      public String getEntityID() {
-        return entityId;
-      }
-
-    };
+    dataInputStream.close();
+    return new ServerCacheManagerConfiguration() {};
   }
   
 }

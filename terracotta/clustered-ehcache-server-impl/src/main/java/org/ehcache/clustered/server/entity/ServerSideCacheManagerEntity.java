@@ -22,10 +22,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.ehcache.clustered.cache.operations.ClusterOperation;
 import org.ehcache.clustered.codecs.ConfigurationCodec;
-import org.ehcache.clustered.config.CacheManagerEntityConfiguration;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terracotta.corestorage.KeyValueStorage;
 import org.terracotta.corestorage.StorageManager;
 import org.terracotta.entity.AbstractDecodingServerEntity;
 import org.terracotta.entity.ClientCommunicator;
@@ -42,7 +41,6 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntity.class);
   
   private final Service<StorageManager> storageService;
-  private final StorageManager storageManager;
   private final Service<ClientCommunicator> communicatorService;
 
   private Set<ClientDescriptor> connectedClients = new HashSet<ClientDescriptor>();
@@ -51,14 +49,11 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   
   private final ConcurrencyStrategy concurrencyStrategy = new EhCacheConcurrencyStrategy();
   
-  private final CacheManagerEntityConfiguration configuration;
-  
-  private KeyValueStorage<Object, Object> poolInfo;
+  private final ServerCacheManagerConfiguration configuration;
 
-  public ServerSideCacheManagerEntity(CacheManagerEntityConfiguration config, Service<?>... services) {
-    this.storageService = (Service<StorageManager>) services[0];
-    this.communicatorService = (Service<ClientCommunicator>) services[1];
-    this.storageManager = storageService.get();
+  public ServerSideCacheManagerEntity(ServerCacheManagerConfiguration config, Service<StorageManager> storageService,  Service<ClientCommunicator> communicatorService) {
+    this.storageService = storageService;
+    this.communicatorService = communicatorService;
     this.configuration = config;
   }
 
