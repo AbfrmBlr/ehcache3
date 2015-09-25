@@ -16,6 +16,7 @@
 package org.ehcache.clustered.client.entity;
 
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
+import org.terracotta.entity.EndpointDelegate;
 import org.terracotta.entity.EntityClientEndpoint;
 
 /**
@@ -30,7 +31,7 @@ public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity
 
   public ClientSideCacheManagerEntity(EntityClientEndpoint endpoint) {
     this.endpoint = endpoint;
-    endpoint.setDelegate(this);
+    endpoint.setDelegate(new ClientEndpointDelegate());
   }
 
   @Override
@@ -38,20 +39,21 @@ public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity
     endpoint.close();
   }
 
-  @Override
-  public void handleMessage(byte[] payload) {
-    // TODO Based on the higher 32 bits find cache
+  private static class ClientEndpointDelegate implements EndpointDelegate {
+    @Override
+    public void handleMessage(final byte[] payload) {
+      // TODO Based on the higher 32 bits find cache
 
+    }
+
+    @Override
+    public byte[] createExtendedReconnectData() {
+      throw new UnsupportedOperationException("Implement me!");
+    }
+
+    @Override
+    public void didDisconnectUnexpectedly() {
+      throw new UnsupportedOperationException("Implement me!");
+    }
   }
-
-  @Override
-  public byte[] createExtendedReconnectData() {
-    throw new UnsupportedOperationException("Implement me!");
-  }
-
-  @Override
-  public void didDisconnectUnexpectedly() {
-    throw new UnsupportedOperationException("Implement me!");
-  }
-
 }

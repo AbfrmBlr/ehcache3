@@ -16,7 +16,6 @@
 package org.ehcache.clustered.entity.api;
 
 import org.terracotta.connection.entity.Entity;
-import org.terracotta.entity.EndpointDelegate;
 
 /**
  * 
@@ -24,6 +23,6 @@ import org.terracotta.entity.EndpointDelegate;
  *
  */
 
-public interface ClusteredCacheManagerEntity extends Entity, EndpointDelegate {
+public interface ClusteredCacheManagerEntity extends Entity {
 
 }
