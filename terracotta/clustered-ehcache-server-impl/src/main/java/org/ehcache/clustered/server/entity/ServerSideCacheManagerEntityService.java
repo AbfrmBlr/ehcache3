@@ -69,7 +69,7 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
     if (storageService == null || communicatorService == null) {
       throw new IllegalArgumentException("Storage Service is not configured.");
     }
-    return new ServerSideCacheManagerEntity(config, storageService, communicatorService);
+    return new ServerSideCacheManagerEntity(config, storageService.get(), communicatorService.get());
   }
 
   @Override

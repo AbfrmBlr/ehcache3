@@ -15,11 +15,6 @@
  */
 package org.ehcache.clustered.server.entity;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
-
 import org.ehcache.clustered.cache.operations.ClusterOperation;
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
@@ -30,7 +25,11 @@ import org.terracotta.entity.AbstractDecodingServerEntity;
 import org.terracotta.entity.ClientCommunicator;
 import org.terracotta.entity.ClientDescriptor;
 import org.terracotta.entity.ConcurrencyStrategy;
-import org.terracotta.entity.Service;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Abhilash
@@ -40,8 +39,8 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntity.class);
   
-  private final Service<StorageManager> storageService;
-  private final Service<ClientCommunicator> communicatorService;
+  private final StorageManager storageService;
+  private final ClientCommunicator communicatorService;
 
   private Set<ClientDescriptor> connectedClients = new HashSet<ClientDescriptor>();
 
@@ -51,7 +50,7 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
   
   private final ServerCacheManagerConfiguration configuration;
 
-  public ServerSideCacheManagerEntity(ServerCacheManagerConfiguration config, Service<StorageManager> storageService,  Service<ClientCommunicator> communicatorService) {
+  public ServerSideCacheManagerEntity(ServerCacheManagerConfiguration config, StorageManager storageService,  ClientCommunicator communicatorService) {
     this.storageService = storageService;
     this.communicatorService = communicatorService;
     this.configuration = config;
@@ -75,8 +74,6 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
 
   @Override
   public void destroy() {
-    storageService.destroy(); // for all services
-    communicatorService.destroy();
   }
 
   @Override
