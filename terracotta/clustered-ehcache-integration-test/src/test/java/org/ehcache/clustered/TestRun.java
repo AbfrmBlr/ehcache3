@@ -16,8 +16,8 @@
 package org.ehcache.clustered;
 
 import org.ehcache.clustered.client.entity.ClientSideCacheManagerEntityService;
-import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.config.EntityVersion;
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.ehcache.clustered.server.entity.ServerSideCacheManagerEntityService;
 import org.junit.After;
@@ -25,19 +25,22 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.terracotta.connection.Connection;
-import org.terracotta.connection.entity.EntityMaintenanceRef;
+import org.terracotta.connection.entity.Entity;
 import org.terracotta.connection.entity.EntityRef;
 import org.terracotta.corestorage.StorageManager;
 import org.terracotta.entity.EntityClientService;
 import org.terracotta.entity.ServerEntityService;
-import org.terracotta.entity.Service;
 import org.terracotta.entity.ServiceConfiguration;
 import org.terracotta.entity.ServiceProvider;
 import org.terracotta.entity.ServiceProviderConfiguration;
+import org.terracotta.leader.CoordinationService;
 import org.terracotta.passthrough.PassthroughServer;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.concurrent.Callable;
 
 import static org.junit.Assert.fail;
 
@@ -47,6 +50,7 @@ public class TestRun {
   private PassthroughServer activeServer;
   private Connection primaryConnection;
   private Connection secondaryConnection;
+  private ClusteredCacheManagerEntityManager ccmeManager;
 
   @Before
   public void setUp() {
@@ -59,6 +63,8 @@ public class TestRun {
     this.activeServer.start();
     this.primaryConnection = this.activeServer.connectNewClient();
     this.secondaryConnection = this.activeServer.connectNewClient();
+
+    this.ccmeManager = new ClusteredCacheManagerEntityManager(this.primaryConnection, new MyCoordinationService());
   }
 
   @After
@@ -76,13 +82,9 @@ public class TestRun {
   public void singleClientSingleServer() throws Throwable {
     // Create an instance which we expect to succeed.
     long implementationVersion = EntityVersion.getVersion();
-    EntityMaintenanceRef<ClusteredCacheManagerEntity, ServerCacheManagerConfiguration> mmodeRef = this.primaryConnection
-        .acquireMaintenanceModeRef(ClusteredCacheManagerEntity.class, implementationVersion, ENTITY_NAME);
-    try {
-      mmodeRef.create(new TestConfig());
-    } finally {
-      mmodeRef.close();
-    }
+    final ClusteredCacheManagerEntity cacheManager = ccmeManager.getCacheManager(ENTITY_NAME, new TestConfig(), ClusteredCacheManagerEntityManager.AccessMode.DESTROY_CREATE);
+    Assert.assertNotNull(cacheManager);
+    cacheManager.close();
 
     // Open the connection to the ref on the primary.
     EntityRef<ClusteredCacheManagerEntity> primaryRef = this.primaryConnection.getEntityRef(ClusteredCacheManagerEntity.class, implementationVersion, ENTITY_NAME);
@@ -97,35 +99,14 @@ public class TestRun {
     secondaryEntity.close();
 
     // We should now be able to get the maintenance mode ref since the monitor should be released.
-    mmodeRef = this.primaryConnection
-        .acquireMaintenanceModeRef(ClusteredCacheManagerEntity.class, implementationVersion, ENTITY_NAME);
-    try {
-      mmodeRef.destroy();
-    } finally {
-      mmodeRef.close();
-    }
+    ccmeManager.destroyCacheManager(ENTITY_NAME);
   }
 
 
   private static class TestConfig implements ServerCacheManagerConfiguration {
-  }
-
-  private static class TestService implements Service<StorageManager> {
     @Override
-    public void initialize(ServiceConfiguration<? extends StorageManager> configuration) {
-      // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public StorageManager get() {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public void destroy() {
-      // TODO Auto-generated method stub
+    public boolean appliesTo(final ServerCacheManagerConfiguration config) {
+      return true;
     }
   }
 
@@ -143,14 +124,41 @@ public class TestRun {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Service<T> getService(long consumerID, ServiceConfiguration<T> configuration) {
-      return (Service<T>)new TestService();
+    public <T> T getService(long consumerID, ServiceConfiguration<T> configuration) {
+      return null;
     }
 
     @Override
     public Collection<Class<?>> getProvidedServiceTypes() {
       // TODO Auto-generated method stub
       return null;
+    }
+  }
+
+  private static class MyCoordinationService implements CoordinationService {
+
+    Deque<Thread> clients = new ArrayDeque<Thread>();
+
+    @Override
+    public synchronized <T> T executeIfLeader(final Class<? extends Entity> entityType, final String entityName, final Callable<T> callable) {
+      final Thread currentThread = Thread.currentThread();
+      if (!clients.contains(currentThread)) {
+        clients.push(currentThread);
+      }
+      if (clients.peek() == currentThread) {
+        try {
+          return callable.call();
+        } catch (Exception e) {
+          clients.remove(currentThread);
+          throw new RuntimeException(e);
+        }
+      }
+      return null;
+    }
+
+    @Override
+    public synchronized void delist(final Class<ClusteredCacheManagerEntity> clusteredCacheManagerEntityClass, final String name) {
+      clients.remove(Thread.currentThread());
     }
   }
 }

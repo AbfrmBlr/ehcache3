@@ -40,7 +40,12 @@ public class ConfigurationCodec {
     ByteArrayInputStream in = new ByteArrayInputStream(cacheManagerConfig);
     DataInputStream dataInputStream =  new DataInputStream(in);
     dataInputStream.close();
-    return new ServerCacheManagerConfiguration() {};
+    return new ServerCacheManagerConfiguration() {
+      @Override
+      public boolean appliesTo(final ServerCacheManagerConfiguration config) {
+        return true;
+      }
+    };
   }
   
 }

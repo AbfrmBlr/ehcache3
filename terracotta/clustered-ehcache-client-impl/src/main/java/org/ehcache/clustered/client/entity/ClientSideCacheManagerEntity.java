@@ -15,6 +15,7 @@
  */
 package org.ehcache.clustered.client.entity;
 
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
 import org.terracotta.entity.EndpointDelegate;
 import org.terracotta.entity.EntityClientEndpoint;
@@ -28,6 +29,7 @@ import org.terracotta.entity.EntityClientEndpoint;
 public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity {
 
   private final EntityClientEndpoint endpoint;
+  private ServerCacheManagerConfiguration config;
 
   public ClientSideCacheManagerEntity(EntityClientEndpoint endpoint) {
     this.endpoint = endpoint;
@@ -37,6 +39,16 @@ public class ClientSideCacheManagerEntity implements ClusteredCacheManagerEntity
   @Override
   public void close() {
     endpoint.close();
+  }
+
+  @Override
+  public ServerCacheManagerConfiguration getConfiguration() {
+    return config;
+  }
+
+  @Override
+  public void init(final ServerCacheManagerConfiguration config) {
+    this.config = config;
   }
 
   private static class ClientEndpointDelegate implements EndpointDelegate {

@@ -15,6 +15,7 @@
  */
 package org.ehcache.clustered.entity.api;
 
+import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.terracotta.connection.entity.Entity;
 
 /**
@@ -25,4 +26,7 @@ import org.terracotta.connection.entity.Entity;
 
 public interface ClusteredCacheManagerEntity extends Entity {
 
+  ServerCacheManagerConfiguration getConfiguration();
+
+  void init(ServerCacheManagerConfiguration config);
 }

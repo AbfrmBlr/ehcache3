@@ -27,7 +27,6 @@ import org.terracotta.entity.BasicServiceConfiguration;
 import org.terracotta.entity.ClientCommunicator;
 import org.terracotta.entity.PassiveServerEntity;
 import org.terracotta.entity.ServerEntityService;
-import org.terracotta.entity.Service;
 import org.terracotta.entity.ServiceRegistry;
 
 /**
@@ -63,13 +62,13 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
       throw new IllegalArgumentException("Entity Config cannot be null");
     }
 
-    Service<StorageManager> storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
-    Service<ClientCommunicator> communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
+    StorageManager storageService = registry.getService(new BasicServiceConfiguration<StorageManager>(StorageManager.class));
+    ClientCommunicator communicatorService = registry.getService(new BasicServiceConfiguration<ClientCommunicator>(ClientCommunicator.class));
 
-    if (storageService == null || communicatorService == null) {
-      throw new IllegalArgumentException("Storage Service is not configured.");
-    }
-    return new ServerSideCacheManagerEntity(config, storageService.get(), communicatorService.get());
+//    if (storageService == null || communicatorService == null) {
+//      throw new IllegalArgumentException("Storage Service is not configured.");
+//    }
+    return new ServerSideCacheManagerEntity(config, storageService, communicatorService);
   }
 
   @Override

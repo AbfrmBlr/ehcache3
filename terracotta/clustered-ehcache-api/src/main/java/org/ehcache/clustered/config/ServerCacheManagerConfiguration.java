@@ -23,4 +23,5 @@ package org.ehcache.clustered.config;
 
 public interface ServerCacheManagerConfiguration {
 
+  boolean appliesTo(ServerCacheManagerConfiguration config);
 }
