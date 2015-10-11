@@ -13,6 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.ehcache.spi.cluster;
 
-include "api", "spi-tester", "core", "core-spi-test", "impl", "management", "transactions", "107", "xml",
-        "integration-test", "dist", "demos/00-NoCache", "demos/01-CacheAside", "docs", "terracotta/clustered-ehcache", "terracotta/clustered-ehcache-api", "terracotta/clustered-ehcache-common", "terracotta/clustered-ehcache-server-impl", "terracotta/clustered-ehcache-distribution", "terracotta/clustered-ehcache-client-impl", "terracotta/clustered-ehcache-integration-test"
+import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
+import org.ehcache.spi.service.Service;
+
+/**
+ * @author Abhilash
+ *
+ */
+public interface TerracottaClientService extends Service {
+
+  /**
+   * This fetches the CacheManager Entity from and provides a local view of the
+   * server side counter part. This Entity at the server is located using the
+   * provided Terracotta URI in configuration.
+   * 
+   * @return
+   */
+  ClusteredCacheManagerEntity getCacheManagerEntity() ;
+
+}

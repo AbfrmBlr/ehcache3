@@ -13,6 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.ehcache.config;
 
-include "api", "spi-tester", "core", "core-spi-test", "impl", "management", "transactions", "107", "xml",
-        "integration-test", "dist", "demos/00-NoCache", "demos/01-CacheAside", "docs", "terracotta/clustered-ehcache", "terracotta/clustered-ehcache-api", "terracotta/clustered-ehcache-common", "terracotta/clustered-ehcache-server-impl", "terracotta/clustered-ehcache-distribution", "terracotta/clustered-ehcache-client-impl", "terracotta/clustered-ehcache-integration-test"
+/**
+ * This provides 4 modes which define the Lifecycle of an TerracottaEntity
+ * GET - The client just gets a reference to the already created Server Side Entity
+ * 
+ * @author Abhilash
+ *
+ */
+public enum TerracottaEntityLifeCycleMode {
+  
+  GET,
+  CREATE,
+  CREATE_DESTROY,
+  GET_IF_CONFIG_SAME
+
+}

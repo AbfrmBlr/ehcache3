@@ -13,6 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.ehcache.connection;
 
-include "api", "spi-tester", "core", "core-spi-test", "impl", "management", "transactions", "107", "xml",
-        "integration-test", "dist", "demos/00-NoCache", "demos/01-CacheAside", "docs", "terracotta/clustered-ehcache", "terracotta/clustered-ehcache-api", "terracotta/clustered-ehcache-common", "terracotta/clustered-ehcache-server-impl", "terracotta/clustered-ehcache-distribution", "terracotta/clustered-ehcache-client-impl", "terracotta/clustered-ehcache-integration-test"
+import java.net.URI;
+import java.util.Properties;
+
+import org.terracotta.connection.Connection;
+import org.terracotta.connection.ConnectionException;
+import org.terracotta.connection.ConnectionFactory;
+
+/**
+ * 
+ * @author Abhilash
+ *
+ */
+
+public class EntityConnectionFactory {
+
+  public static Connection connect(URI uri) throws ConnectionException {
+    return ConnectionFactory.connect(uri, new EntityDisconnectHandler(), new Properties());
+  }
+
+}

@@ -122,7 +122,21 @@ def fillManifest(manifest, title) {
 }
 
 ext {
+
   offHeapVersion = '2.1.0'
+  connectionApiVersion = '1.0-SNAPSHOT'
+  entityServerApi = '1.0-SNAPSHOT'
+  entityClientApi = '1.0-SNAPSHOT'
+  entityTestLib = '1.0-SNAPSHOT'
+  standardClusterServices = '1.0-SNAPSHOT'
+  coreStorageApi = '1.3'
+}
+
+allprojects {
+  plugins.withType(EclipsePlugin) {
+    eclipse.project.name = eclipse.project.name.replaceAll("/", "-")  
+  }
+
 }
 
 subprojects {
