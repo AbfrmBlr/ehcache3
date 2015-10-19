@@ -20,8 +20,6 @@ import java.io.IOException;
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terracotta.entity.EntityClientEndpoint;
 import org.terracotta.entity.EntityClientService;
 
@@ -33,8 +31,6 @@ import org.terracotta.entity.EntityClientService;
 
 public class ClientSideCacheManagerEntityService implements EntityClientService<ClusteredCacheManagerEntity, ServerCacheManagerConfiguration> {
   
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientSideCacheManagerEntityService.class);
-
   @Override
   public boolean handlesEntityType(Class<ClusteredCacheManagerEntity> cls) {
     return cls.isAssignableFrom(ClusteredCacheManagerEntity.class); // for now
@@ -51,7 +47,6 @@ public class ClientSideCacheManagerEntityService implements EntityClientService<
     try {
       config = ConfigurationCodec.encodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {
-      LOGGER.error("Failed to encode Entity Config", e);
       throw new IllegalStateException("Failed to encode Entity Config", e);
     }
     return config;
@@ -63,7 +58,6 @@ public class ClientSideCacheManagerEntityService implements EntityClientService<
     try {
       config = ConfigurationCodec.decodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {
-      LOGGER.error("Failed to decode Entity Config", e);
       throw new IllegalStateException("Failed to decode Entity Config", e);
     }
     return config;

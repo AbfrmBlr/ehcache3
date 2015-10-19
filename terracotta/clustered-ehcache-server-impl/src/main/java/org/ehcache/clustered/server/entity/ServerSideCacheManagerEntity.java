@@ -18,8 +18,6 @@ package org.ehcache.clustered.server.entity;
 import org.ehcache.clustered.cache.operations.ClusterOperation;
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terracotta.corestorage.StorageManager;
 import org.terracotta.entity.AbstractDecodingServerEntity;
 import org.terracotta.entity.ClientCommunicator;
@@ -37,8 +35,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<ClusterOperation, Object> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntity.class);
-  
   private final StorageManager storageService;
   private final ClientCommunicator communicatorService;
 
@@ -58,11 +54,11 @@ public class ServerSideCacheManagerEntity extends AbstractDecodingServerEntity<C
 
   @Override
   public byte[] getConfig() {
-    byte[] config = null;
+    byte[] config;
     try {
       config = ConfigurationCodec.encodeCacheManangerConfiguration(this.configuration);
     } catch (IOException e) {
-      LOGGER.error("Failed to encode Entity Config", e);
+      throw new RuntimeException(e);
     }
     return config;
   }

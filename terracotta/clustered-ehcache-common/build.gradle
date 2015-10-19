@@ -17,5 +17,5 @@
 archivesBaseName = "clustered-cache-common"
 
 dependencies {
-  compile project(':terracotta/clustered-ehcache-api')
+
 }

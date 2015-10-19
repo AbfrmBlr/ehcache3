@@ -16,6 +16,6 @@
 archivesBaseName = "clustered-cache-client-impl"
 
 dependencies {
-  compile project(':terracotta/clustered-ehcache-api'), project(':terracotta/clustered-ehcache-common')
+  compile project(':terracotta/clustered-ehcache-common')
   compile group: 'org.terracotta', name: 'entity-client-api', version: parent.entityClientApi
 }

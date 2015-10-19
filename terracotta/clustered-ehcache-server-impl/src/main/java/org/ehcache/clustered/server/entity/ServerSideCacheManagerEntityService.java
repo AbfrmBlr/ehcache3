@@ -20,8 +20,6 @@ import java.io.IOException;
 import org.ehcache.clustered.codecs.ConfigurationCodec;
 import org.ehcache.clustered.config.ServerCacheManagerConfiguration;
 import org.ehcache.clustered.config.EntityVersion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terracotta.corestorage.StorageManager;
 import org.terracotta.entity.BasicServiceConfiguration;
 import org.terracotta.entity.ClientCommunicator;
@@ -40,8 +38,6 @@ import org.terracotta.entity.ServiceRegistry;
 
 public class ServerSideCacheManagerEntityService implements ServerEntityService<ServerSideCacheManagerEntity, PassiveServerEntity> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ServerSideCacheManagerEntityService.class);
-
   @Override
   public boolean handlesEntityType(String typeName) {
     return typeName.equals("org.ehcache.clustered.entity.api.ClusteredCacheManagerEntity");
@@ -55,7 +51,7 @@ public class ServerSideCacheManagerEntityService implements ServerEntityService<
     try {
       config = ConfigurationCodec.decodeCacheManangerConfiguration(configuration);
     } catch (IOException e) {
-      LOGGER.error("Failed to decode Entity Config", e);
+      throw new RuntimeException(e);
     }
 
     if (config == null) {
