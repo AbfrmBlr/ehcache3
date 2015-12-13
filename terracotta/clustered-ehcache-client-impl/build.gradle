@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+archivesBaseName = "clustered-cache-client-impl"
 
-include "api", "spi-tester", "core", "core-spi-test", "impl", "management", "transactions", "107", "xml",
-        "integration-test", "dist", "osgi-test", "demos/00-NoCache", "demos/01-CacheAside", "docs", "terracotta/clustered-ehcache", "terracotta/clustered-ehcache-api", "terracotta/clustered-ehcache-common", "terracotta/clustered-ehcache-server-impl", "terracotta/clustered-ehcache-distribution", "terracotta/clustered-ehcache-client-impl", "terracotta/clustered-ehcache-integration-test"
+dependencies {
+  compile project(':terracotta/clustered-ehcache-common')
+  compile group: 'org.terracotta', name: 'entity-client-api', version: parent.entityClientApi
+}

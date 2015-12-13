@@ -13,6 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.ehcache.clustered.config;
 
-include "api", "spi-tester", "core", "core-spi-test", "impl", "management", "transactions", "107", "xml",
-        "integration-test", "dist", "osgi-test", "demos/00-NoCache", "demos/01-CacheAside", "docs", "terracotta/clustered-ehcache", "terracotta/clustered-ehcache-api", "terracotta/clustered-ehcache-common", "terracotta/clustered-ehcache-server-impl", "terracotta/clustered-ehcache-distribution", "terracotta/clustered-ehcache-client-impl", "terracotta/clustered-ehcache-integration-test"
+/**
+ * 
+ * @author Abhilash
+ *
+ */
+
+public interface ServerCacheManagerConfiguration {
+
+  boolean appliesTo(ServerCacheManagerConfiguration config);
+}
