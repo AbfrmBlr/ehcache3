@@ -45,9 +45,8 @@ public class LoaderWriterStoreProvider implements WrapperStore.Provider {
 
   @Override
   public <K, V> Store<K, V> createStore(boolean useLoaderInAtomics, Store.Configuration<K, V> storeConfig, ServiceConfiguration<?>... serviceConfigs) {
-    CacheLoaderWriterConfiguration loaderWriterConfiguration = findSingletonAmongst(CacheLoaderWriterConfiguration.class, serviceConfigs);
-    Store.Provider underlyingStoreProvider = selectProvider(storeConfig.getResourcePools().getResourceTypeSet(),
-            Arrays.asList(serviceConfigs), loaderWriterConfiguration);
+    Store.Provider underlyingStoreProvider = StoreSupport.selectStoreProvider(serviceProvider,
+            storeConfig.getResourcePools().getResourceTypeSet(), Arrays.asList(serviceConfigs));
     Store<K, V> store = underlyingStoreProvider.createStore(useLoaderInAtomics , storeConfig, serviceConfigs);
 
     LocalLoaderWriterStore<K, V> loaderWriterStore = new LocalLoaderWriterStore<>(store, storeConfig.getCacheLoaderWriter(), useLoaderInAtomics, storeConfig.getExpiry());
@@ -70,14 +69,6 @@ public class LoaderWriterStoreProvider implements WrapperStore.Provider {
   @Override
   public int rank(Set<ResourceType<?>> resourceTypes, Collection<ServiceConfiguration<?>> serviceConfigs) {
     throw new UnsupportedOperationException("Its a Wrapper store provider, does not support regular ranking");
-  }
-
-  private Store.Provider selectProvider(Set<ResourceType<?>> resourceTypes,
-                                        Collection<ServiceConfiguration<?>> serviceConfigs,
-                                        CacheLoaderWriterConfiguration loaderWriterConfiguration) {
-    List<ServiceConfiguration<?>> configsWithoutLoaderWriter = new ArrayList<>(serviceConfigs);
-    configsWithoutLoaderWriter.remove(loaderWriterConfiguration);
-    return StoreSupport.selectStoreProvider(serviceProvider, resourceTypes, configsWithoutLoaderWriter);
   }
 
   @Override

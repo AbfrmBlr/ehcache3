@@ -48,9 +48,9 @@ public class DelegatingLoaderWriterStoreProvider implements WrapperStore.Provide
   @Override
   public <K, V> Store<K, V> createStore(boolean useLoaderInAtomics, Store.Configuration<K, V> storeConfig, ServiceConfiguration<?>... serviceConfigs) {
 
-    CacheLoaderWriterConfiguration loaderWriterConfiguration = findSingletonAmongst(CacheLoaderWriterConfiguration.class, Arrays.asList(serviceConfigs));
-    Store.Provider underlyingStoreProvider = selectProvider(storeConfig.getResourcePools().getResourceTypeSet(),
-            Arrays.asList(serviceConfigs), loaderWriterConfiguration);
+    Store.Provider underlyingStoreProvider = StoreSupport
+            .selectStoreProvider(serviceProvider, storeConfig.getResourcePools().getResourceTypeSet(),
+                    Arrays.asList(serviceConfigs));
 
     Store<K, V> store = underlyingStoreProvider.createStore(useLoaderInAtomics, storeConfig, serviceConfigs);
     DelegatingLoaderWriterStore<K, V> loaderWriterStore = new DelegatingLoaderWriterStore<>(store);
@@ -83,14 +83,6 @@ public class DelegatingLoaderWriterStoreProvider implements WrapperStore.Provide
   @Override
   public void stop() {
     this.serviceProvider = null;
-  }
-
-  private Store.Provider selectProvider(Set<ResourceType<?>> resourceTypes,
-                                        Collection<ServiceConfiguration<?>> serviceConfigs,
-                                        CacheLoaderWriterConfiguration loaderWriterConfiguration) {
-    List<ServiceConfiguration<?>> configsWithoutLoaderWriter = new ArrayList<>(serviceConfigs);
-    configsWithoutLoaderWriter.remove(loaderWriterConfiguration);
-    return StoreSupport.selectStoreProvider(serviceProvider, resourceTypes, configsWithoutLoaderWriter);
   }
 
   @Override
